@@ -14,13 +14,10 @@ const Part = (props) => {
 }
 
 const Content = (props) => {
-  return (
-    <div>
-      <Part title={props.parts[0].name} exnum={props.parts[0].exercises} />
-      <Part title={props.parts[1].name} exnum={props.parts[1].exercises} />
-      <Part title={props.parts[2].name} exnum={props.parts[2].exercises} />
-    </div>
-  )
+  const retval = props.parts.map(value =>
+    <Part title={value.name} exnum={value.exercises} />)
+  console.log(retval)
+  return(retval)
 }
 
 const Total = (props) => {
