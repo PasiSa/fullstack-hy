@@ -7,14 +7,36 @@ const Button = ({ onClick, text }) => (
   </button>
 )
 
+const ShowAnecdote = ({ index, votes }) => (
+  <div>
+    {anecdotes[index]}<br/>
+    has {votes[index]} votes<br/>
+  </div>
+)
+
 const App = (props) => {
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(new Array(10+1).join('0').split('').map(parseFloat))
+  const [most, setMost] = useState(0)
 
   const selectRandom = () => setSelected(Math.floor(Math.random() * anecdotes.length))
-
+  const vote = () => {
+    const copy = { ...votes }
+    copy[selected] += 1
+    setVotes(copy)
+    if (copy[selected] > copy[most]) {
+      setMost(selected)
+    }
+  }
   return (
     <div>
-      {props.anecdotes[selected]}<br/>
+      <h1>Anecdote of the day</h1>
+      <ShowAnecdote index={selected} votes={votes}/>
+      
+      <h1>Anecdote with most votes</h1>
+      <ShowAnecdote index={most} votes={votes}/>
+
+      <Button onClick={vote} text="vote" />
       <Button onClick={selectRandom} text="next anecdote" />
     </div>
   )
