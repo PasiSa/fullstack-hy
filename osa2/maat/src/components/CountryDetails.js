@@ -1,6 +1,20 @@
-import React from 'react'
+import React,{ useEffect } from 'react'
+import axios from 'axios'
+import Weather from './Weather'
 
-const CountryDetails = ({country}) => {
+const CountryDetails = ({ country, weather, setWeather }) => {
+  useEffect(() => {
+    console.log(country)
+    if (country) {
+      axios
+        .get(`http://api.weatherstack.com/current?access_key=${process.env.REACT_APP_API_KEY}&query=${country.capital}`)
+        .then(response => {
+          console.log(response)
+          setWeather(response.data)
+      })
+    }
+  }, [country, setWeather])
+
   if (country) {
     return (
       <div>
@@ -15,6 +29,8 @@ const CountryDetails = ({country}) => {
         </ul>
 
         <img src={country.flag} alt="flag" width="200"/>
+
+        <Weather weather={weather} />
       </div>
     )
   }

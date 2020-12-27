@@ -7,6 +7,7 @@ const App = () => {
   const [ findInput, setFindInput ] = useState('')
   const [ countries, setCountries ] = useState('')
   const [ selected, setSelected ] = useState(null)
+  const [ weather, setWeather ] = useState(null)
 
   const handleFindChange = (event) => {
     setFindInput(event.target.value)
@@ -25,7 +26,7 @@ const App = () => {
       find countries
       <input value={findInput} onChange={handleFindChange}/>
       <CountryList countries={countries} handler={setSelected}/>
-      <CountryDetails country={selected} />
+      <CountryDetails country={selected} weather={weather} setWeather={setWeather} />
     </div>
   );
 }
