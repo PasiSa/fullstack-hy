@@ -1,41 +1,43 @@
 import React from 'react'
-import CountryDetails from './CountryDetails'
 
 const Country = (props) => {
-  console.log(props.country.name)
   return (
-    <div>{props.country.name}</div>
+    <div>
+      {props.country.name}
+      <button onClick={props.handler}>show</button>
+    </div>
   )
 }
 
-const CountryList = ({countries}) => {
-  const namesToShow = () => {
-    if (countries.length > 10) {
-      return (
-        <div>
-          Too many countries,specify another filter
-        </div>)
-    }
-    if (countries.length > 1) {
-      return (
-        <div>
-          {countries.map(country =>
-            <Country key={country.alpha2code} country={country}/>)}
-        </div>
-      )
-    }
-    if (countries.length === 1) {
-      return (
-        <CountryDetails country={countries[0]} />
-      )
-    }
+const CountryList = ({countries, handler}) => {
+  if (countries.length > 10) {
+    handler(null)
     return (
-      <div>No matching countries.</div>
+      <div>
+        Too many countries,specify another filter
+      </div>)
+  }
+  if (countries.length > 1) {
+    return (
+      <div>
+        {countries.map(country =>
+          <Country
+            key={country.alpha2code}
+            country={country}
+            handler={() => handler(country)}
+          />)}
+      </div>
     )
   }
-
+  if (countries.length === 1) {
+    handler(countries[0])
+    return (
+      <div></div>
+    )
+  }
+  handler(null)
   return (
-    <div>{namesToShow()}</div>
+    <div>No matching countries.</div>
   )
 }
 
