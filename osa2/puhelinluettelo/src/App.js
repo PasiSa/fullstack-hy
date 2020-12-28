@@ -49,12 +49,13 @@ const App = () => {
   }
 
   const deleteHandler = (person) => {
-    console.log(person)
-    personService
-      .deletePers(person)
-      .then(response => {
-        setPersons(persons.filter(pers => pers.id !== person.id))
-      })
+    if (window.confirm(`Delete ${person.name}?`)) {
+      personService
+        .deletePers(person)
+        .then(response => {
+          setPersons(persons.filter(pers => pers.id !== person.id))
+        })
+    }
   }
 
   return (
