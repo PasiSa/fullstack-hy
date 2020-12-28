@@ -11,4 +11,11 @@ const create = newObject => {
   return req.then(response => response.data)
 }
 
-export default { getAll, create }
+const deletePers = pers => {
+  const url = `${baseUrl}/${pers.id}`
+  const req = axios.delete(url)
+  return req.then(response => response)
+}
+
+//eslint-disable-next-line
+export default { getAll, create, deletePers }

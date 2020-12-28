@@ -10,13 +10,13 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ filterName, setFilterName ] = useState('')
 
-useEffect(() => {
-  personService
-    .getAll()
-    .then(gotPersons => {
-      setPersons(gotPersons)
-    })
-}, [])
+  useEffect(() => {
+    personService
+      .getAll()
+      .then(gotPersons => {
+        setPersons(gotPersons)
+      })
+  }, [])
 
   const addName = (event) => {
     event.preventDefault()
@@ -48,6 +48,15 @@ useEffect(() => {
     setFilterName(event.target.value)
   }
 
+  const deleteHandler = (person) => {
+    console.log(person)
+    personService
+      .deletePers(person)
+      .then(response => {
+        setPersons(persons.filter(pers => pers.id !== person.id))
+      })
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -60,7 +69,7 @@ useEffect(() => {
       />
 
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={filterName} />
+      <Persons persons={persons} filter={filterName} deleteHandler={deleteHandler}/>
     </div>
   )
 
