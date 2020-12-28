@@ -17,5 +17,11 @@ const deletePers = pers => {
   return req.then(response => response)
 }
 
+const changeNumber = pers => {
+  const url = `${baseUrl}/${pers.id}`
+  const req = axios.put(url, pers)
+  return req.then(response => response.data)
+}
+
 //eslint-disable-next-line
-export default { getAll, create, deletePers }
+export default { getAll, create, deletePers, changeNumber }
