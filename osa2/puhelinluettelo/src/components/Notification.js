@@ -5,9 +5,11 @@ const Notification = ({ message }) => {
     return null
   }
 
+  const cname = message.error ? 'error' : 'notification'
+
   return (
-    <div className="notification">
-      {message}
+    <div className={cname}>
+      {message.message}
     </div>
   )
 }

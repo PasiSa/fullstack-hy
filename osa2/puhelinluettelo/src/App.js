@@ -20,8 +20,12 @@ const App = () => {
       })
   }, [])
 
-  const showMessage = (message) => {
-    setMessage(message)
+  const showMessage = (mes, error) => {
+    const mesState = {
+      message: mes,
+      error: error
+    }
+    setMessage(mesState)
     setTimeout(() => {
       setMessage(null)
     }, 5000)
@@ -42,8 +46,13 @@ const App = () => {
           .then(changedPerson => {
             setPersons(persons.map(pers => pers.id !== changed.id ? pers : changedPerson))
             showMessage(
-              `Number of ${changedPerson.name} was changed to ${changedPerson.number}`
+              `Number of ${changedPerson.name} was changed to ${changedPerson.number}`,
+              false
             )
+          })
+          .catch(error => {
+            setPersons(persons.filter(pers => pers.id !== oldpers.id))
+            showMessage(`${oldpers.name} was already removed from server`, true)
           })
       }
     } else {
@@ -51,7 +60,7 @@ const App = () => {
         .create(nameObject)
         .then(returned => {
           setPersons(persons.concat(returned))
-          showMessage(`${returned.name} was added to phonebook`)
+          showMessage(`${returned.name} was added to phonebook`, false)
         })
     }
     setNewName('')
@@ -76,7 +85,7 @@ const App = () => {
         .deletePers(person)
         .then(response => {
           setPersons(persons.filter(pers => pers.id !== person.id))
-          showMessage(`${person.name} was deleted from phonebook`)
+          showMessage(`${person.name} was deleted from phonebook`, false)
         })
     }
   }
@@ -84,7 +93,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <Notification message={message}/>
+      <Notification message={message} />
       <Filter name={filterName} handler={handleFilterChange}/>
 
       <h3>Add new</h3>
