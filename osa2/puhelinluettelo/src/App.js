@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
 import personService from './services/persons'
 
 const App = () => {
@@ -9,6 +10,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ filterName, setFilterName ] = useState('')
+  const [ message, setMessage ] = useState(null)
 
   useEffect(() => {
     personService
@@ -17,6 +19,13 @@ const App = () => {
         setPersons(gotPersons)
       })
   }, [])
+
+  const showMessage = (message) => {
+    setMessage(message)
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
+  }
 
   const addName = (event) => {
     event.preventDefault()
@@ -32,6 +41,9 @@ const App = () => {
           .changeNumber(changed)
           .then(changedPerson => {
             setPersons(persons.map(pers => pers.id !== changed.id ? pers : changedPerson))
+            showMessage(
+              `Number of ${changedPerson.name} was changed to ${changedPerson.number}`
+            )
           })
       }
     } else {
@@ -39,6 +51,7 @@ const App = () => {
         .create(nameObject)
         .then(returned => {
           setPersons(persons.concat(returned))
+          showMessage(`${returned.name} was added to phonebook`)
         })
     }
     setNewName('')
@@ -63,13 +76,15 @@ const App = () => {
         .deletePers(person)
         .then(response => {
           setPersons(persons.filter(pers => pers.id !== person.id))
+          showMessage(`${person.name} was deleted from phonebook`)
         })
     }
   }
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
+      <Notification message={message}/>
       <Filter name={filterName} handler={handleFilterChange}/>
 
       <h3>Add new</h3>
