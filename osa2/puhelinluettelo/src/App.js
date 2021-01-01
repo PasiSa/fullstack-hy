@@ -52,7 +52,7 @@ const App = () => {
           })
           .catch(error => {
             setPersons(persons.filter(pers => pers.id !== oldpers.id))
-            showMessage(`${oldpers.name} was already removed from server`, true)
+            showMessage(error.response.data.error, true)
           })
       }
     } else {
@@ -61,6 +61,9 @@ const App = () => {
         .then(returned => {
           setPersons(persons.concat(returned))
           showMessage(`${returned.name} was added to phonebook`, false)
+        })
+        .catch(error => {
+          showMessage(error.response.data.error, true)
         })
     }
     setNewName('')
